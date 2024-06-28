@@ -15,9 +15,7 @@ export class PropertiesPageComponent {
     avatar: 'https://reqres.in/img/faces/2-image.jpg',
   });
 
-  fullName = computed<string>(() => {
-    return `${this.user()?.first_name} ${this.user()?.last_name}`;
-  });
+  fullName = computed<string>(() => `${this.user()?.first_name} ${this.user()?.last_name}`);
 
   onFieldUpdated(field: keyof User, value: string) {
     //! Ojo potencialmente inseguro porque en el field podemos enviar algo que no exista en relación al objeto que queremos crear
@@ -27,23 +25,25 @@ export class PropertiesPageComponent {
     // })
 
     this.user.update((current) => {
+
+      let newUser = {...current}
       switch (field) {
         case 'email':
-          current.email = value;
+          newUser.email = value;
           break;
 
         case 'first_name':
-          current.first_name = value;
+          newUser.first_name = value;
           break;
         case 'last_name':
-          current.last_name = value;
+          newUser.last_name = value;
           break;
         case 'id':
-          current.id = Number(value);
+          newUser.id = Number(value);
           break;
       }
 
-      return current;
+      return newUser;
     });
   }
 }
