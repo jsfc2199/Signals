@@ -1,9 +1,12 @@
 <ul class="list-group">
-  <li *ngFor="let item of
-  menuItems"
-  class="list-group-item"
-  [routerLink]="[item.route]"
-  routerLinkActive="active">
-  {{ item. title }}
+  <!-- usamos menuItems() para acceder al valor de la señal y no a la referencia -->
+   <!-- si en cualquier lugar, modificamos la señal, angular sabrá de los lugares donde tiene que ir específicamente a cambiar la señal -->
+  <li
+    *ngFor="let item of menuItems()"
+    class="list-group-item"
+    [routerLink]="[item.route]"
+    routerLinkActive="active"
+  >
+    {{ item.title }}
   </li>
-  </ul>
+</ul>
