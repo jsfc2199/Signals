@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { User } from '../../interfaces/user.interface';
 
 @Component({
@@ -16,6 +16,16 @@ export class PropertiesPageComponent {
   });
 
   fullName = computed<string>(() => `${this.user()?.first_name} ${this.user()?.last_name}`);
+
+  public counter = signal(10)
+
+  public userChangeEffect = effect( () => {
+    //en el cuerpo definimos las dependencias
+    //cada vez que el usuario cambia disparamos el efecto de imprimir el nombre
+    //se limpia de manera automática
+    console.log(`${this.user().first_name} - ${this.counter()}`); //se dibuja solo si el usuario cambia o el contador
+
+  })
 
   onFieldUpdated(field: keyof User, value: string) {
     //! Ojo potencialmente inseguro porque en el field podemos enviar algo que no exista en relación al objeto que queremos crear
@@ -45,5 +55,14 @@ export class PropertiesPageComponent {
 
       return newUser;
     });
+  }
+
+  increaseBy(value: number){
+    this.counter.update(current => current + value)
+  }
+
+  ngOnDestroy(): void {
+    //podemos hacer la limpieza manual del efecto si estamos desconfiados
+    // this.userChangeEffect.destroy()
   }
 }
